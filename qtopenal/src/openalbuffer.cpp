@@ -59,4 +59,7 @@ int QtOpenalBuffer::getSize()
     alGetBufferi(m_iId, AL_SIZE, &s);
     return s;
 }
-
+bool QtOpenalBuffer::IsBuffer(const QtOpenalBuffer& buffer)
+{
+    return alIsBuffer(buffer.m_iId);
+}

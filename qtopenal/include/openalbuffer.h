@@ -49,9 +49,9 @@ public:
     int getFrequenz();
     int getSize();
 
-    virtual void Load(QString fileName) = 0;
-
     unsigned int handle() { return m_iId; }
+
+    static bool IsBuffer(const QtOpenalBuffer& buffer);
 protected:
     QtOpenalContext *m_pContext;
     QString m_strName;

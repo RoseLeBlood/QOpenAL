@@ -74,6 +74,27 @@ void QtOpenalSource::Bind(QtOpenalBuffer* buffer)
 {
     alSourcei(m_iId, AL_BUFFER, buffer->handle());
 }
+void QtOpenalSource::SourceQueueBuffers(QVector<QtOpenalBuffer*> buffers)
+{
+    unsigned int *_buffers = new unsigned int[buffers.size()];
+    for(int i= 0; i < buffers.size(); i++)
+        _buffers[i] = buffers[i]->handle();
+
+    alSourceQueueBuffers(m_iId, buffers.size(), _buffers);
+}
+void QtOpenalSource::SourceUnqueueBuffers(QVector<QtOpenalBuffer*> buffers)
+{
+    unsigned int *_buffers = new unsigned int[buffers.size()];
+    for(int i= 0; i < buffers.size(); i++)
+        _buffers[i] = buffers[i]->handle();
+
+    alSourceUnqueueBuffers(m_iId, buffers.size(), _buffers);
+}
+void QtOpenalSource::SourceUnqueueBuffers(unsigned int size, unsigned int *id)
+{
+    alSourceUnqueueBuffers(m_iId, size, id);
+}
+
 void QtOpenalSource::Play()
 {
     alSourcePlay(m_iId);

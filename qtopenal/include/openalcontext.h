@@ -50,12 +50,15 @@ public:
     void setVelocity(glm::vec3 velocity);
     void setOrientation(glm::vec3 at, glm::vec3 up = glm::vec3(0,1,0));
 
-    glm::vec3 getPosition() { return m_vecPosition; }
-    glm::vec3 getVelocity() { return m_vecVelocity; }
-    glm::vec3 getAt() { return m_vecAt; }
-    glm::vec3 getUp() { return m_vecUp; }
+    glm::vec3 getPosition()  const  { return m_vecPosition; }
+    glm::vec3 getVelocity() const  { return m_vecVelocity; }
+    glm::vec3 getAt()  const  { return m_vecAt; }
+    glm::vec3 getUp()  const  { return m_vecUp; }
 
+    QtOpenalOutputDevice& getDevice() const { return *m_pDevice; }
     static QtOpenalContext *getCurrentContext();
+
+
 protected:
     glm::vec3 m_vecPosition;
     glm::vec3 m_vecVelocity;

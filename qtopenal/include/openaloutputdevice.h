@@ -50,13 +50,16 @@ public:
 
     bool IsExtensionPresent(QString extension);
     bool IsEAXSupport();
+
     bool IsOpen() { return m_bIsOpen; }
     void* GetProcAddress(QString strproc);
     QString getName();
+    QString getError();
 
     MaxAuxiliarySends::MaxAuxiliarySends_t getMaxAuxiliarySends();
 
      ALCdevice* handle() { return m_pDevice; }
+
 signals:
 
 public slots:

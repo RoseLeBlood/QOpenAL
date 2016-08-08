@@ -19,6 +19,7 @@
 #include "include/openaloutputdevice.h"
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <AL/alext.h>
 
 QtOpenalOutputDevice::QtOpenalOutputDevice(ALCdevice* device, QObject *parent)
     : QObject(parent), m_strName(""), m_pDevice(device), m_bIsOpen(false)
@@ -77,6 +78,11 @@ MaxAuxiliarySends::MaxAuxiliarySends_t QtOpenalOutputDevice::getMaxAuxiliarySend
 QString QtOpenalOutputDevice::getName()
 {
     return alcGetString(m_pDevice, ALC_DEVICE_SPECIFIER);
+}
+
+QString QtOpenalOutputDevice::getError()
+{
+    return alcGetString(m_pDevice, alcGetError(m_pDevice));
 }
 
 

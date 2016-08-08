@@ -1,0 +1,5 @@
+; E:\ming\bin\dlltool --base-file C:\Users\sophia\AppData\Local\Temp\cca09444.base --output-exp mpglib.exp --dllname mpglib.dll --output-def libmpglib.def --no-export-all-symbols --add-stdcall-alias --exclude-symbol=DllMainCRTStartup@12 --def C:\Users\sophia\AppData\Local\Temp\cca09444.def --output-lib libmpglib.a
+EXPORTS
+	InitMP3 @ 1
+	decodeMP3 @ 2
+	ExitMP3 @ 3

@@ -20,6 +20,7 @@
 #define QTOPENALSOURCE_H
 
 #include "openalcontext.h"
+#include "QVector"
 
 class QtOpenalBuffer;
 
@@ -44,6 +45,10 @@ public:
     void Stop();
     void Pause();
     void Rewind();
+
+    void SourceQueueBuffers(QVector<QtOpenalBuffer*> buffers);
+    void SourceUnqueueBuffers(QVector<QtOpenalBuffer*> buffers);
+    void SourceUnqueueBuffers(unsigned int size, unsigned int *id);
 
     void setPosition(glm::vec3 position);
     void setVelocity(glm::vec3 velocity);

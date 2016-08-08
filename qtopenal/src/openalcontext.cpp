@@ -62,6 +62,11 @@ bool QtOpenalContext::Create(int freq, int refresh, bool sync, bool enableEfx,
         attribute.push_back(131075);
         attribute.push_back(num_slots);
 
+        qInfo() << "[OpenAL] EAX Support";
+        if (alIsExtensionPresent("EAX-RAM") == AL_TRUE)
+        {
+              qInfo() << "[OpenAL] EAX-RAM Support";
+        }
     }
      m_pContext = alcCreateContext(m_pDevice->handle(), attribute.constData());
 
@@ -70,10 +75,16 @@ bool QtOpenalContext::Create(int freq, int refresh, bool sync, bool enableEfx,
         qDebug() << "[OpenAL] Error by alcCreateContext";
         return false;
     }
+
     MakeCurrent();
+
+
+
     setPosition(glm::vec3(0.0f, 0.0f, 1.0f));
     setVelocity(glm::vec3(0.0f,0.0f,0.0f));
     setOrientation(glm::vec3(0.0f,0.0f,-1.0f));
+
+
     return true;
 }
 void QtOpenalContext::Release()
@@ -137,4 +148,3 @@ QtOpenalContext *QtOpenalContext::getCurrentContext()
 {
     return new QtOpenalContext(alcGetCurrentContext());
 }
-
