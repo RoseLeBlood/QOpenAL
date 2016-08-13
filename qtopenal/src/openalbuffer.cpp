@@ -19,15 +19,30 @@
 #include "include/openalbuffer.h"
 #include <AL/al.h>
 #include <AL/alc.h>
+#define AL_ALEXT_PROTOTYPES
+#include <AL/alext.h>
 
-QtOpenalBuffer::QtOpenalBuffer(QString name, QtOpenalContext* context )
+QtOpenalBuffer::QtOpenalBuffer(QString name,  unsigned int bufferSize, QtOpenalContext* context )
     : m_pContext(context), m_strName(name)
 {
     alGenBuffers((ALuint)1, &m_iId);
+    //m_pBuffer = malloc(bufferSize);
+    if(alIsExtensionPresent("AL_SOFT_buffer_samples"))
+    {
+
+    }
+
 }
-QtOpenalBuffer::~QtOpenalBuffer()
+QtOpenalBuffer::QtOpenalBuffer(unsigned int id, QtOpenalContext* context)
+ : m_pContext(context), m_iId(id)
+{
+
+}
+
+void QtOpenalBuffer::Delete()
 {
     alDeleteBuffers(1, &m_iId);
+    //free(m_pBuffer);
 }
 void QtOpenalBuffer::BufferData(BufferFormat::BufferFormat_t format,
                                 const void *data, size_t size,

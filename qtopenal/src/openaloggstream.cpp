@@ -36,8 +36,8 @@ struct ogg_internal
 
 QtOpenalOggStream::QtOpenalOggStream(QString name,
                                      QtOpenalContext *context,
-                                     QObject *p, int iNnumBuffer, int iBufferSizre)
-    : QtOpenalStream(name, context, p, iNnumBuffer, iBufferSizre)
+                                     QObject *p, int iNnumBuffer)
+    : QtOpenalStream(name, context, p, iNnumBuffer)
 {
     m_pI = new ogg_internal();
 }
@@ -60,8 +60,11 @@ bool QtOpenalOggStream::LoadFile(QString strFile)
 
     m_uiFormat = (m_pI->m_pVorbisInfo->channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16);
     m_uiFrequency = m_pI->m_pVorbisInfo->rate;
+    m_uiChannels = m_pI->m_pVorbisInfo->channels;
 
-    return true;
+    setFormat(m_uiChannels, 16, false);
+
+    return QtOpenalStream::LoadFile(strFile);
 }
 
 void QtOpenalOggStream::Release()
@@ -73,8 +76,10 @@ void QtOpenalOggStream::Release()
         fclose(m_pI->m_pFile);
     }
 }
-bool QtOpenalOggStream::stream(QtOpenalBuffer* buffer)
+bool QtOpenalOggStream::stream(QtOpenalBuffer* buffer, int _size)
 {
+    Q_UNUSED(_size);
+
     int  size = 0;
     int  section;
     int  result;
@@ -93,7 +98,6 @@ bool QtOpenalOggStream::stream(QtOpenalBuffer* buffer)
     if(size == 0)
         return false;
 
-    buffer->BufferData((BufferFormat::BufferFormat_t)m_uiFormat, m_pBuffer, size, m_uiFrequency);
-    return true;
+    return QtOpenalStream::stream(buffer, size);
 }
 

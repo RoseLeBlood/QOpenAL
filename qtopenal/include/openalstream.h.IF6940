@@ -34,11 +34,11 @@ class QOPENALSHARED_EXPORT QtOpenalStream : public QObject
     Q_OBJECT
 public:
     QtOpenalStream(QString name, QtOpenalContext *context,  QObject* p = 0,
-                   int iNnumBuffer = 3);
+                   int iNnumBuffer = 3, int iBufferSizre = 32768);
 
     virtual ~QtOpenalStream();
 
-    virtual bool LoadFile(QString strFile);
+    virtual bool LoadFile(QString strFile) = 0;
     virtual bool Play();
     virtual void Release();
 
@@ -47,23 +47,22 @@ public:
 
     virtual QString getInformation(StreamInfo::StreamInfo_t info) = 0;
 
+    virtual const int getBuffer(char *buffer, int size);
+
     QtOpenalSource * getSource() { return m_pSource; }
 
 protected:
     virtual bool stream(QtOpenalBuffer* buffer, int size = 0);
     QtOpenalBuffer* find(int id);
-
-    void setFormat(unsigned short channels, unsigned short bits, bool rear);
 protected:
     QVector<QtOpenalBuffer*> m_pBuffers;
     QtOpenalSource* m_pSource;
     QtOpenalContext *m_pContext;
     unsigned int m_uiFrequency;
     unsigned int m_uiChannels;
-    unsigned int m_uuType;
     unsigned int m_uiFormat;
     char* m_pBuffer;
-
+    CircularBuffer* m_pBufferLoop;
     unsigned int m_iBufferSize;
 };
 

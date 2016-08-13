@@ -38,8 +38,10 @@ namespace BufferFormat
 class QOPENALSHARED_EXPORT QtOpenalBuffer
 {
 public:
-    QtOpenalBuffer(QString name, QtOpenalContext* context );
-    virtual ~QtOpenalBuffer();
+    QtOpenalBuffer(QString name, unsigned int bufferSize, QtOpenalContext* context );
+    QtOpenalBuffer(unsigned int id, QtOpenalContext* context);
+
+    void Delete();
 
     void BufferData(BufferFormat::BufferFormat_t format, const void *data,
                     size_t size, size_t freq);
@@ -49,12 +51,16 @@ public:
     int getFrequenz();
     int getSize();
 
+  //  void* getBuffer() { return m_pBuffer; }
+
     unsigned int handle() { return m_iId; }
 
     static bool IsBuffer(const QtOpenalBuffer& buffer);
+
 protected:
     QtOpenalContext *m_pContext;
     QString m_strName;
+    //void* m_pBuffer;
     unsigned int m_iId;
 };
 

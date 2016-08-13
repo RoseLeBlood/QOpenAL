@@ -22,7 +22,14 @@
 
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <AL/alext.h>
+#include "include/openalsoft.h"
+
+
+QtOpenalSource::QtOpenalSource()
+    : m_pContext(0)
+{
+
+}
 
 QtOpenalSource::QtOpenalSource(QString name, QtOpenalContext *context)
     : m_pContext(context), m_strName(name)
@@ -35,6 +42,12 @@ QtOpenalSource::QtOpenalSource(QString name, QtOpenalContext *context)
     setVelocity(glm::vec3(0, 0, 0));
     setLooping(false);
 }
+QtOpenalSource::QtOpenalSource(QtOpenalSource& other)
+   : m_pContext(other.m_pContext), m_strName(other.m_strName), m_iId(other.handle())
+{
+
+}
+
 QtOpenalSource::~QtOpenalSource()
 {
     alDeleteSources(1, &m_iId);
@@ -74,7 +87,7 @@ void QtOpenalSource::Bind(QtOpenalBuffer* buffer)
 {
     alSourcei(m_iId, AL_BUFFER, buffer->handle());
 }
-void QtOpenalSource::SourceQueueBuffers(QVector<QtOpenalBuffer*> buffers)
+void QtOpenalSource::QueueBuffers(QVector<QtOpenalBuffer*> buffers)
 {
     unsigned int *_buffers = new unsigned int[buffers.size()];
     for(int i= 0; i < buffers.size(); i++)
@@ -82,7 +95,12 @@ void QtOpenalSource::SourceQueueBuffers(QVector<QtOpenalBuffer*> buffers)
 
     alSourceQueueBuffers(m_iId, buffers.size(), _buffers);
 }
-void QtOpenalSource::SourceUnqueueBuffers(QVector<QtOpenalBuffer*> buffers)
+void QtOpenalSource::QueueBuffers(unsigned int size, const unsigned int *ids)
+{
+    alSourceQueueBuffers(m_iId, size, ids);
+}
+
+void QtOpenalSource::UnqueueBuffers(QVector<QtOpenalBuffer*> buffers)
 {
     unsigned int *_buffers = new unsigned int[buffers.size()];
     for(int i= 0; i < buffers.size(); i++)
@@ -90,7 +108,7 @@ void QtOpenalSource::SourceUnqueueBuffers(QVector<QtOpenalBuffer*> buffers)
 
     alSourceUnqueueBuffers(m_iId, buffers.size(), _buffers);
 }
-void QtOpenalSource::SourceUnqueueBuffers(unsigned int size, unsigned int *id)
+void QtOpenalSource::UnqueueBuffers(unsigned int size, unsigned int *id)
 {
     alSourceUnqueueBuffers(m_iId, size, id);
 }
@@ -239,4 +257,15 @@ int QtOpenalSource::getConeOuterAngle()
     alGetSourcei(m_iId, AL_CONE_OUTER_ANGLE, &f );
     return f;
 
+}
+double QtOpenalSource::getLatency()
+{
+    double offset[2];
+     alGetSourcedvSOFT(m_iId, AL_SEC_OFFSET_LATENCY_SOFT, offset);
+     return offset[0];
+}
+
+double QtOpenalSource::getOffsetLastRead()
+{
+ return 0;
 }

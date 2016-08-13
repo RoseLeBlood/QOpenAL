@@ -18,7 +18,9 @@ SOURCES += \
     src/openalsource.cpp \
     src/openalbuffer.cpp \
     src/openaloggstream.cpp \
-    src/openalstream.cpp
+    src/openalstream.cpp \
+    src/circularbuffer.cpp \
+    src/openalsoft.cpp
 
 HEADERS +=\
         include/qopenal_global.h \
@@ -36,7 +38,9 @@ HEADERS +=\
     include/openaloggstream.h \
     include/QtOpenalOggStream \
     include/openalstream.h \
-    include/QtOpenalStream
+    include/QtOpenalStream \
+    include/circularbuffer.h \
+    include/openalsoft.h
 
 unix {
     target.path = /usr/lib

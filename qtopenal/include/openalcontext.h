@@ -27,6 +27,26 @@
 
 typedef struct ALCcontext_struct ALCcontext;
 
+namespace OpenalContextFormat {
+    enum OpenalContextFormat_t
+    {
+        s16Bit = 0x1402,
+        s32Bit = 0x1404,
+        Float = 0x1406,
+    };
+
+}
+namespace OpenalContextChannel
+{
+    enum OpenalContextChannel_t
+    {
+        Mono = 0x1500,
+        Stereo = 0x1501,
+        Quad = 0x1503,
+        FivePointOne = 0x1504,
+        SevenPointOne = 0x1506,
+    };
+}
 class QOPENALSHARED_EXPORT QtOpenalContext : public QObject
 {
    Q_OBJECT
@@ -34,7 +54,8 @@ public:
     QtOpenalContext(ALCcontext *context, QObject *parent = 0);
     QtOpenalContext(QtOpenalOutputDevice *pDevice, QObject *parent = 0);
 
-    bool Create(int freq, int refresh, bool sync, bool enableEfx = false,
+    bool Create(int freq, OpenalContextFormat::OpenalContextFormat_t format,
+                OpenalContextChannel::OpenalContextChannel_t channels,
                 MaxAuxiliarySends::MaxAuxiliarySends_t efxAuxiliarySends = MaxAuxiliarySends::Default);
     bool Destroy();
 

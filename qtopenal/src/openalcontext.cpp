@@ -20,7 +20,7 @@
 #include <QVector>
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <AL/alext.h>
+#include "include/openalsoft.h"
 
 QtOpenalContext::QtOpenalContext(ALCcontext *context, QObject *parent) : QObject(parent), m_pContext(context)
 {
@@ -32,7 +32,8 @@ QtOpenalContext::QtOpenalContext(QtOpenalOutputDevice *pDevice, QObject *parent)
 {
 
 }
-bool QtOpenalContext::Create(int freq, int refresh, bool sync, bool enableEfx,
+bool QtOpenalContext::Create(int freq, OpenalContextFormat::OpenalContextFormat_t format,
+                             OpenalContextChannel::OpenalContextChannel_t channels,
                              MaxAuxiliarySends::MaxAuxiliarySends_t efxAuxiliarySends)
 {
     if(!m_pDevice->IsOpen())
@@ -43,13 +44,15 @@ bool QtOpenalContext::Create(int freq, int refresh, bool sync, bool enableEfx,
     attribute.push_back(ALC_FREQUENCY);
     attribute.push_back(freq);
 
-    attribute.push_back(ALC_REFRESH);
-    attribute.push_back(refresh);
+    attribute.push_back(ALC_FORMAT_CHANNELS_SOFT);
+    attribute.push_back((int)channels);
 
-    attribute.push_back(ALC_SYNC);
-    attribute.push_back((sync ? 1 : 0));
 
-    if(enableEfx && m_pDevice->IsEAXSupport())
+    attribute.push_back(ALC_FORMAT_TYPE_SOFT);
+    attribute.push_back((int)format);
+
+
+    if(m_pDevice->IsEAXSupport())
     {
         int num_slots;
 
@@ -68,8 +71,9 @@ bool QtOpenalContext::Create(int freq, int refresh, bool sync, bool enableEfx,
               qInfo() << "[OpenAL] EAX-RAM Support";
         }
     }
-     m_pContext = alcCreateContext(m_pDevice->handle(), attribute.constData());
 
+     m_pContext = alcCreateContext(m_pDevice->handle(), attribute.constData());
+     alCreateHelpers();
     if(m_pContext == 0)
     {
         qDebug() << "[OpenAL] Error by alcCreateContext";

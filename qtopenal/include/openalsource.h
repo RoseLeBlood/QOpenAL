@@ -37,7 +37,10 @@ namespace SourceState
 class QOPENALSHARED_EXPORT QtOpenalSource
 {
 public:
+    QtOpenalSource();
     QtOpenalSource(QString name, QtOpenalContext *context);
+    QtOpenalSource(QtOpenalSource& other);
+
     virtual ~QtOpenalSource();
 
     void Bind(QtOpenalBuffer* buffer);
@@ -46,9 +49,10 @@ public:
     void Pause();
     void Rewind();
 
-    void SourceQueueBuffers(QVector<QtOpenalBuffer*> buffers);
-    void SourceUnqueueBuffers(QVector<QtOpenalBuffer*> buffers);
-    void SourceUnqueueBuffers(unsigned int size, unsigned int *id);
+    void QueueBuffers(QVector<QtOpenalBuffer*> buffers);
+    void QueueBuffers(unsigned int size, const unsigned int *id);
+    void UnqueueBuffers(QVector<QtOpenalBuffer*> buffers);
+    void UnqueueBuffers(unsigned int size, unsigned int *id);
 
     void setPosition(glm::vec3 position);
     void setVelocity(glm::vec3 velocity);
@@ -79,6 +83,9 @@ public:
     float getConeOuterGain();
     int getConeInnerAngle();
     int getConeOuterAngle();
+
+    double getLatency();
+    double getOffsetLastRead();
 
     unsigned int handle() { return m_iId; }
 
